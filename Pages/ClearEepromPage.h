@@ -1,0 +1,258 @@
+char CLEAREEPROM_page[] PROGMEM = R"=====(
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WIFI Setup</title>
+</head>
+
+<body>
+    <header>
+        <h1>Clear WIFI</h1>
+        <p>Your Wifi Credentials will be cleared<br>
+        and The Device will restart.
+        </p>
+        <p class="note">
+        please note: if it doesn't show up within a minute you will need to press the restart button on your device.
+        </p>
+    </header>
+    <div class="countdown">
+        <progress value="0" max="10" id="progressBar"></progress>
+    </div>
+</body>
+<script>
+    var timeleft = 10;
+    var downloadTimer = setInterval(function () {
+        document.getElementById("progressBar").value = 10 - timeleft;
+        timeleft -= 1;
+        if (timeleft <= -1)
+            clearInterval(downloadTimer);
+    }, 1000);
+</script>
+<style>
+    header {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        font-weight: bolder;
+        margin-bottom: 0;
+    }
+
+    header h1,
+    header p {
+        width: 100%;
+        text-align: center;
+        font-family: arial, "helvetica";
+    }
+    header p.note {
+        background: #d95153;
+        color: #fff;
+        padding: 1rem;
+        text-align: left;
+        font-family: monospace;
+    }
+
+    #wifi_config {
+        width: 90%;
+        max-width: 400px;
+        display: flex;
+        margin: 0 auto;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    #wifi_config input {
+        width: 100%;
+        padding: .7rem;
+        margin: .5rem 0 1rem;
+    }
+
+    #wifi_config input[type="submit"] {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        font-weight: 900;
+    }
+
+    /* Styling an indeterminate progress bar */
+
+    progress:not(value) {
+        /* Add your styles here. As part of this walkthrough we will focus only on determinate progress bars. */
+    }
+
+    /* Styling the determinate progress element */
+
+    progress[value] {
+        /* Get rid of the default appearance */
+        appearance: none;
+
+        /* This unfortunately leaves a trail of border behind in Firefox and Opera. We can remove that by setting the border to none. */
+        border: none;
+
+        /* Add dimensions */
+        width: 100%;
+        max-width: 400px;
+        display: block;
+        margin: 0 auto;
+        height: 30px;
+
+        /* Although firefox doesn't provide any additional pseudo class to style the progress element container, any style applied here works on the container. */
+        background-color: whiteSmoke;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, .5) inset;
+
+        /* Of all IE, only IE10 supports progress element that too partially. It only allows to change the background-color of the progress value using the 'color' attribute. */
+        color: royalblue;
+
+        position: relative;
+    }
+
+    /*
+Webkit browsers provide two pseudo classes that can be use to style HTML5 progress element.
+-webkit-progress-bar -> To style the progress element container
+-webkit-progress-value -> To style the progress element value.
+*/
+
+    progress[value]::-webkit-progress-bar {
+        background-color: whiteSmoke;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, .5) inset;
+    }
+
+    progress[value]::-webkit-progress-value {
+        position: relative;
+
+        background-size: 55px 30px, 100% 100%, 100% 100%;
+        border-radius: 3px;
+
+        /* Let's animate this */
+        animation: animate-stripes 5s linear infinite;
+    }
+
+    @keyframes animate-stripes {
+        100% {
+            background-position: -100px 0;
+        }
+    }
+
+    /* Let's spice up things little bit by using pseudo elements. */
+
+    progress[value]::-webkit-progress-value:after {
+        /* Only webkit/blink browsers understand pseudo elements on pseudo classes. A rare phenomenon! */
+        content: '';
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        top: 7px;
+        right: 7px;
+        background-color: white;
+        border-radius: 100%;
+    }
+
+    /* Firefox provides a single pseudo class to style the progress element value and not for container. -moz-progress-bar */
+
+    progress[value]::-moz-progress-bar {
+        /* Gradient background with Stripes */
+        background-image:
+            -moz-linear-gradient(135deg,
+            transparent,
+            transparent 33%,
+            rgba(0, 0, 0, .1) 33%,
+            rgba(0, 0, 0, .1) 66%,
+            transparent 66%),
+            -moz-linear-gradient(top,
+            rgba(255, 255, 255, .25),
+            rgba(0, 0, 0, .2)),
+            -moz-linear-gradient(left, #09c, #f44);
+
+        background-size: 35px 20px, 100% 100%, 100% 100%;
+        border-radius: 3px;
+
+        /* Firefox doesn't support CSS3 keyframe animations on progress element. Hence, we did not include animate-stripes in this code block */
+    }
+
+    /* Fallback technique styles */
+    .progress-bar {
+        background-color: whiteSmoke;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, .5) inset;
+
+        /* Dimensions should be similar to the parent progress element. */
+        width: 100%;
+        max-width: 400px;
+        height: 20px;
+    }
+
+    .progress-bar span {
+        background-color: royalblue;
+        border-radius: 3px;
+        display: block;
+        text-indent: -9999px;
+    }
+
+    p[data-value] {
+        position: relative;
+    }
+
+    /* The percentage will automatically fall in place as soon as we make the width fluid. Now making widths fluid. */
+
+    p[data-value]:after {
+        content: attr(data-value) '%';
+        position: absolute;
+        right: 0;
+    }
+
+
+
+
+
+    #progressBar::-webkit-progress-value{
+        /* Gradient background with Stripes */
+        background-image:
+            -webkit-linear-gradient(135deg,
+            transparent,
+            transparent 33%,
+            rgba(0, 0, 0, .1) 33%,
+            rgba(0, 0, 0, .1) 66%,
+            transparent 66%),
+            -webkit-linear-gradient(top,
+            rgba(255, 255, 255, .25),
+            rgba(0, 0, 0, .2)),
+            -webkit-linear-gradient(left, #09c, #f44);
+    }
+
+    /* Similarly, for Mozillaa. Unfortunately combining the styles for different browsers will break every other browser. Hence, we need a separate block. */
+
+    #progressBar::-moz-progress-bar {
+        /* Gradient background with Stripes */
+        background-image:
+            -moz-linear-gradient(135deg,
+            transparent,
+            transparent 33%,
+            rgba(0, 0, 0, .1) 33%,
+            rgba(0, 0, 0, .1) 66%,
+            transparent 66%),
+            -moz-linear-gradient(top,
+            rgba(255, 255, 255, .25),
+            rgba(0, 0, 0, .2)),
+            -moz-linear-gradient(left, #09c, #f44);
+    }
+</style>
+
+</html>
+)=====";

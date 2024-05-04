@@ -1,3 +1,5 @@
+#include "../Framework.h"
+
 char RESTART_page[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html lang="en">

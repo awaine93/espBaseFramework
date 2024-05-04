@@ -1,3 +1,5 @@
+#include "../Framework.h"
+
 char ADMINSETPASS_page[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html lang="en">

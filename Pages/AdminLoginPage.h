@@ -1,3 +1,5 @@
+#include "../Framework.h"
+
 char ADMINLOGIN_page[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html lang="en">

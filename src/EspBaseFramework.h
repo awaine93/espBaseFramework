@@ -7,8 +7,8 @@
  * 
 */
  
-#ifndef Framework_h
-#define Framework_h
+#ifndef EspBaseFramework_h
+#define EspBaseFramework_h
 
 
 #include <ESP8266WiFi.h>

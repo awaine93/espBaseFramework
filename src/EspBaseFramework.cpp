@@ -19,7 +19,7 @@
 #import "Pages/AdminLoginPage.h"
 #import "Pages/DashboardPage.h"
 
-#include "Framework.h"
+#include "EspBaseFramework.h"
 
 /* Pages declaration */
 //  WiFi connected

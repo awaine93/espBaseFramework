@@ -284,7 +284,7 @@ void Framework::setup() {
       #endif
       connectedRoutes();
       MdnsController.initMdns(DEVICE_NAME);
-      OTAController.initOTA();
+      OTAController.initOTA(DEVICE_NAME);
    }
 
  // Initialize LittleFS

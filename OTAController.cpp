@@ -11,9 +11,9 @@
 #include <ArduinoOTA.h>
 #include "OTAController.h"
 
-void OTAController::initOTA(){
+void OTAController::initOTA(String hostname){
 
-  ArduinoOTA.setHostname("esp8266");
+  ArduinoOTA.setHostname(hostname.c_str());
   ArduinoOTA.onStart([]() {});
   ArduinoOTA.onEnd([]() {});
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {});

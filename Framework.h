@@ -30,7 +30,7 @@
 #include "OTAController.h"
 
 // Optional Settings
-const String DEVICE_NAME = "Bedroom-RollerBlind";
+const String DEVICE_NAME = "CHANGE-ME";
 const int WIFI_CON_WAIT = 20;
 
 class Framework{

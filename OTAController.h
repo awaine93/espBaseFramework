@@ -12,7 +12,7 @@
 
 class OTAController{
 public:
-   void initOTA();
+   void initOTA(String);
    void handleOTA();
 };
 

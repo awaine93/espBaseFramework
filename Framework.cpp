@@ -97,6 +97,10 @@ void Framework::notConnectedRoutes() {
     this->wifiSelect(request);
   });
 
+_server.on("/captive.apple.com", HTTP_GET, [this](AsyncWebServerRequest *request){
+    this->wifiSelect(request);
+  });
+
   _server.on("/fwlink", HTTP_GET, [this](AsyncWebServerRequest *request){
     this->wifiSelect(request);
   });
@@ -105,8 +109,6 @@ void Framework::notConnectedRoutes() {
     this->setWifiCreds(request);
   });
 }
-
-
 
 /*
  * Setup WiFi main function

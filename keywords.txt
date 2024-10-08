@@ -1,0 +1,40 @@
+EepromController	KEYWORD1
+startEeprom	KEYWORD2
+wipe	KEYWORD2
+clearAdminPass	KEYWORD2
+storeWifiCreds	KEYWORD2
+storeAdminPass	KEYWORD2
+eepromGetWifiSsid	KEYWORD2
+eepromGetWifiPass	KEYWORD2
+isAdminPassSet	KEYWORD2
+getAdminPass	KEYWORD2
+
+Framework	KEYWORD1
+setup	KEYWORD2
+loop	KEYWORD2
+wifiSelect	KEYWORD2
+setWifiCreds	KEYWORD2
+notConnectedRoutes	KEYWORD2
+setupCredsRoutine	KEYWORD2
+landing	KEYWORD2
+clearEepromFull	KEYWORD2
+clearEepromAdminPass	KEYWORD2
+setAdminPass	KEYWORD2
+adminLogin	KEYWORD2
+dashboard	KEYWORD2
+connectedRoutes	KEYWORD2
+startEeprom	KEYWORD2
+
+MdnsController	KEYWORD1
+loopHandle	KEYWORD2
+initMdns	KEYWORD2
+
+OTAController	KEYWORD1
+initOTA	KEYWORD2
+handleOTA	KEYWORD2
+
+WifiController	KEYWORD1
+getSsidOptions	KEYWORD2
+setupWifiAp	KEYWORD2
+forgetWifi	KEYWORD2
+wifiConnTimer	KEYWORD2

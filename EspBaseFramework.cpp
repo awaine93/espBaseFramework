@@ -10,6 +10,10 @@
 #define SERIAL_DEBUGGING
 
 
+// Variables for user defined pages
+extern String customDashboardPage;
+
+
 // Import pages
 #import "Pages/WifiFormPage1.h"
 #import "Pages/WifiFormPage2.h"
@@ -17,16 +21,23 @@
 #import "Pages/RestartPage.h"
 #import "Pages/AdminSetPassPage.h"
 #import "Pages/AdminLoginPage.h"
-#import "Pages/DashboardPage.h"
 
 #include "EspBaseFramework.h"
 
 /* Pages declaration */
+
+if(customDashboardPage.length()){
+  const String dashboardPage = customDashboardPage;
+}else{
+  #import "Pages/DashboardPage.h"
+  const String dashboardPage = FPSTR(DASHBOARD_page);
+}
+
+
 //  WiFi connected
 const String adminSetPassPage = FPSTR(ADMINSETPASS_page);
 const String adminLoginPage = FPSTR(ADMINLOGIN_page);
 const String clearEepromPage = FPSTR(CLEAREEPROM_page);
-const String dashboardPage = FPSTR(DASHBOARD_page);
 
 //  Non WiFi connected 
 const String wifiFormPage1 = FPSTR(WIFIFORM_page_1);

@@ -1,27 +1,22 @@
-#include "../Framework.h"
+#include "../EspBaseFramework.h"
 
-char ADMINSETPASS_page[] PROGMEM = R"=====(
+char ADMINLOGIN_page[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <script src="/vue"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WIFI Setup</title>
+    <title>Login</title>
 </head>
 <body>
 <header>
-    <h1>Setup Your Configuration Password</h1>
+    <h1>Login</h1>
 </header>
-<form id="wifi_config" method="post" action="/admin/set/pass">
-    <h2>Set Configuration Password</h2>
-
+<form id="admin_login" method="post" action="/admin/login">
+    <h2>Login</h2>
     <label for="pass">Password : </label>
-    <input type="password" name="pass">
-
-    <label for="confirm">Confirm: </label>
-    <input type="password" name="confirm"/>
-
+    <input type="password" placeholder="Password" name="pass">
     <input type="submit"  style="margin-top: 20px" value="Sumbit"/>
 </form>
 
@@ -48,7 +43,7 @@ char ADMINSETPASS_page[] PROGMEM = R"=====(
         text-align: center;
         font-family: arial, "helvetica";
     }
-    #wifi_config{
+    #admin_login{
         width: 90%;
         max-width: 400px;
         display: flex;
@@ -56,12 +51,12 @@ char ADMINSETPASS_page[] PROGMEM = R"=====(
         justify-content: center;
         flex-wrap: wrap;
     }
-    #wifi_config input{
+    #admin_login input{
         width: 100%;
         padding: .7rem;
         margin: .5rem 0 1rem;
     }
-    #wifi_config input[type="submit"]{
+    #admin_login input[type="submit"]{
         background: #000;
         color: #fff;
         border: none;
@@ -70,12 +65,12 @@ char ADMINSETPASS_page[] PROGMEM = R"=====(
         font-size: 1rem;
         font-weight: 900;
     }
-    #wifi_config label {
+    #admin_login label {
         width: 100%;
         font-family: arial, "helvetica";
     }
 
-    #wifi_config select {
+    #admin_login select {
         width: 100%;
         padding: .7rem;
         margin: .5rem 0 1rem;

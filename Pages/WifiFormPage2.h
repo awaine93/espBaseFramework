@@ -1,22 +1,9 @@
-#include "../Framework.h"
+#include "../EspBaseFramework.h"
 
-char ADMINLOGIN_page[] PROGMEM = R"=====(
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script src="/vue"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
-</head>
-<body>
-<header>
-    <h1>Login</h1>
-</header>
-<form id="admin_login" method="post" action="/admin/login">
-    <h2>Login</h2>
-    <label for="pass">Password : </label>
-    <input type="password" placeholder="Password" name="pass">
+char WIFIFORM_page_2[] PROGMEM = R"=====(
+    </select>
+    <label for="pass">Password: </label>
+    <input type="password" placeholder="Password" name="pass"/>
     <input type="submit"  style="margin-top: 20px" value="Sumbit"/>
 </form>
 
@@ -43,7 +30,7 @@ char ADMINLOGIN_page[] PROGMEM = R"=====(
         text-align: center;
         font-family: arial, "helvetica";
     }
-    #admin_login{
+    #wifi_config{
         width: 90%;
         max-width: 400px;
         display: flex;
@@ -51,12 +38,12 @@ char ADMINLOGIN_page[] PROGMEM = R"=====(
         justify-content: center;
         flex-wrap: wrap;
     }
-    #admin_login input{
+    #wifi_config input{
         width: 100%;
         padding: .7rem;
         margin: .5rem 0 1rem;
     }
-    #admin_login input[type="submit"]{
+    #wifi_config input[type="submit"]{
         background: #000;
         color: #fff;
         border: none;
@@ -65,12 +52,12 @@ char ADMINLOGIN_page[] PROGMEM = R"=====(
         font-size: 1rem;
         font-weight: 900;
     }
-    #admin_login label {
+    #wifi_config label {
         width: 100%;
         font-family: arial, "helvetica";
     }
 
-    #admin_login select {
+    #wifi_config select {
         width: 100%;
         padding: .7rem;
         margin: .5rem 0 1rem;

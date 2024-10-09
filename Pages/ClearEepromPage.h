@@ -1,4 +1,4 @@
-#include "../Framework.h"
+#include "../EspBaseFramework.h"
 
 char CLEAREEPROM_page[] PROGMEM = R"=====(
 <!DOCTYPE html>

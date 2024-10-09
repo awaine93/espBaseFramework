@@ -259,7 +259,7 @@ void Framework::startEeprom() {
 /*
  * Main Setup
  */
-void Framework::setup() {
+void Framework::begin() {
    
     #ifdef SERIAL_DEBUGGING
       Serial.begin(115200);
@@ -302,7 +302,7 @@ void Framework::setup() {
 /*
  * Main Loop
  */
-void Framework::loop() {
+void Framework::run() {
     // Handles any incoming request
     dnsServer.processNextRequest();
 

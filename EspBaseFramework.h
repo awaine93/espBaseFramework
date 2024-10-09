@@ -36,8 +36,8 @@ const int WIFI_CON_WAIT = 20;
 class Framework{
     public:
         Framework(AsyncWebServer& server);
-        void setup();
-        void loop();
+        void begin();
+        void run();
         AsyncWebServer& _server;
         //AsyncWebServer& getServer();
     private:

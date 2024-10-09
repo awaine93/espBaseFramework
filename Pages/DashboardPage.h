@@ -1,13 +1,26 @@
-#include "../Framework.h"
+#include "../EspBaseFramework.h"
 
-char WIFIFORM_page_2[] PROGMEM = R"=====(
-    </select>
-    <label for="pass">Password: </label>
-    <input type="password" placeholder="Password" name="pass"/>
-    <input type="submit"  style="margin-top: 20px" value="Sumbit"/>
-</form>
+char DASHBOARD_page[] PROGMEM = R"=====(
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+</head>
+<body>
+<header>
+    <h1>Dashboard</h1>
+</header>
+
+<div id="dashboard">
+    
+</div>
 
 </body>
+
+<script></script>
+
 <style>
     header {
         width: 100%;
@@ -20,17 +33,20 @@ char WIFIFORM_page_2[] PROGMEM = R"=====(
         flex-wrap: wrap;
         margin-bottom: 1rem;
     }
+
     header h1 {
         font-size: 2rem;
         font-weight: bolder;
         margin-bottom: 0;
     }
+
     header h1, header p {
         width: 100%;
         text-align: center;
         font-family: arial, "helvetica";
     }
-    #wifi_config{
+
+    #dashboard {
         width: 90%;
         max-width: 400px;
         display: flex;
@@ -38,12 +54,14 @@ char WIFIFORM_page_2[] PROGMEM = R"=====(
         justify-content: center;
         flex-wrap: wrap;
     }
-    #wifi_config input{
+
+    #dashboard input {
         width: 100%;
         padding: .7rem;
         margin: .5rem 0 1rem;
     }
-    #wifi_config input[type="submit"]{
+
+    #dashboard input[type="submit"] {
         background: #000;
         color: #fff;
         border: none;
@@ -52,12 +70,13 @@ char WIFIFORM_page_2[] PROGMEM = R"=====(
         font-size: 1rem;
         font-weight: 900;
     }
-    #wifi_config label {
+
+    #dashboard label {
         width: 100%;
         font-family: arial, "helvetica";
     }
 
-    #wifi_config select {
+    #dashboard select {
         width: 100%;
         padding: .7rem;
         margin: .5rem 0 1rem;

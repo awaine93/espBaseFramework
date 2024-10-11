@@ -3,29 +3,21 @@
  * 
  * Esp8266 Setup Firmware  
  * 
- * Version 1.1.0
+ * Version 1.4.0
  * 
 */
 
 #define SERIAL_DEBUGGING
 
 // Import pages
-#import "Pages/WifiFormPage1.h"
-#import "Pages/WifiFormPage2.h"
-#import "Pages/ClearEepromPage.h"
-#import "Pages/RestartPage.h"
-#import "Pages/AdminSetPassPage.h"
-#import "Pages/AdminLoginPage.h"
+#include "Pages/WifiFormPage1.h"
+#include "Pages/WifiFormPage2.h"
+#include "Pages/ClearEepromPage.h"
+#include "Pages/RestartPage.h"
+#include "Pages/AdminSetPassPage.h"
+#include "Pages/AdminLoginPage.h"
 
 #include "EspBaseFramework.h"
-
-// #ifdef CUSTOM_DASHBOARD
-//   const String dashboardPage = customDashboardPage;
-// #else
-//   #import "Pages/DashboardPage.h"
-//   const String dashboardPage = FPSTR(DASHBOARD_page);
-// #endif
-
 
 /* Pages declaration */
 //  WiFi connected
@@ -49,10 +41,10 @@ DNSServer dnsServer;
 //AsyncWebServer server(80);
 
 // Internal Class instances 
-EepromController EepromController;
-MdnsController MdnsController;
-OTAController OTAController;
-WifiController WifiController;
+EepromController eepromController;
+MdnsController mdnsController;
+OTAController otaController;
+WifiController wifiController;
 
 /*
  * Constructor
@@ -79,8 +71,8 @@ void Framework::setWifiCreds(AsyncWebServerRequest *request) {
     String ssidInput = request->arg("ssid");
     String passInput = request->arg("pass");
 
-    EepromController.wipe();
-    EepromController.storeWifiCreds(ssidInput, passInput);
+    eepromController.wipe();
+    eepromController.storeWifiCreds(ssidInput, passInput);
 
     request->send_P(200, "text/html", RestartPage.c_str());
 
@@ -118,8 +110,8 @@ _server.on("/captive.apple.com", HTTP_GET, [this](AsyncWebServerRequest *request
  * Setup WiFi main function
  */
 void Framework::setupCredsRoutine() {
-   wifiOptions = WifiController.getSsidOptions();
-   WifiController.setupWifiAp(DEVICE_NAME);
+   wifiOptions = wifiController.getSsidOptions();
+   wifiController.setupWifiAp(DEVICE_NAME);
    dnsServer.start(DNS_PORT, "*", dns_IP);
   
    notConnectedRoutes();
@@ -139,7 +131,7 @@ void Framework::setupCredsRoutine() {
  */
 void Framework::landing(AsyncWebServerRequest *request) {
     // If no pass has been set, return the set password page, otherwise return the login page 
-    if(EepromController.isAdminPassSet() == "1") {
+    if(eepromController.isAdminPassSet() == "1") {
         request->send_P(200, "text/html", adminLoginPage.c_str());
     } else {
         request->send_P(200, "text/html", adminSetPassPage.c_str());
@@ -150,9 +142,9 @@ void Framework::landing(AsyncWebServerRequest *request) {
  * Clear EEPROM page
  */
 void Framework::clearEepromFull(AsyncWebServerRequest *request) {
-     EepromController.wipe();
+     eepromController.wipe();
      request->send(200, "text/html", clearEepromPage);
-     WifiController.forgetWifi();
+     wifiController.forgetWifi();
      delay(10000);
      ESP.restart();
 }
@@ -163,7 +155,7 @@ void Framework::clearEepromFull(AsyncWebServerRequest *request) {
  */
 void Framework::clearEepromAdminPass(AsyncWebServerRequest *request) {
   
-    EepromController.clearAdminPass();
+    eepromController.clearAdminPass();
     request->redirect("/");
     request->send( 302, "text/plain", "");
 }
@@ -173,7 +165,7 @@ void Framework::clearEepromAdminPass(AsyncWebServerRequest *request) {
  */
 void Framework::setAdminPass(AsyncWebServerRequest *request) {
  // Check if the admin pass is NOT set
-  if(EepromController.isAdminPassSet() != "1"){
+  if(eepromController.isAdminPassSet() != "1"){
   
     // Get input credentials
     String pass = request->arg("pass");
@@ -181,7 +173,7 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
 
     // Validate (TODO :: need to validate not empty fields & standard password  stuff )
     if(pass.equals(confirm)){
-      EepromController.storeAdminPass(pass);
+      eepromController.storeAdminPass(pass);
     }
   }
   
@@ -199,12 +191,11 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
 
     String returnRoute;
 
-    if(EepromController.isAdminPassSet() == "1"){
+    if(eepromController.isAdminPassSet() == "1"){
       String userPass = request->arg("pass");
-      String eepromPass = EepromController.getAdminPass();
+      String eepromPass = eepromController.getAdminPass();
 
       if(eepromPass.equals(userPass)){
-         //returnRoute = "/dashboard";
          returnRoute = loggedInRoute;
       }else{
          returnRoute = "/";
@@ -271,12 +262,12 @@ void Framework::begin() {
       Serial.println();
     #endif
 
-   EepromController.startEeprom();   
+   eepromController.startEeprom();   
    delay(1000);
 
-   String ssid = EepromController.eepromGetWifiSsid();
-   String pass = EepromController.eepromGetWifiPass();
-   WifiController.wifiConnTimer(WIFI_CON_WAIT, ssid, pass, DEVICE_NAME);
+   String ssid = eepromController.eepromGetWifiSsid();
+   String pass = eepromController.eepromGetWifiPass();
+   wifiController.wifiConnTimer(WIFI_CON_WAIT, ssid, pass, DEVICE_NAME);
 
    // WiFi Connected check 
    if(WiFi.status() != WL_CONNECTED){
@@ -290,8 +281,8 @@ void Framework::begin() {
         Serial.println(WiFi.localIP()); 
       #endif
       connectedRoutes();
-      MdnsController.initMdns(DEVICE_NAME);
-      OTAController.initOTA(DEVICE_NAME);
+      mdnsController.initMdns(DEVICE_NAME);
+      otaController.initOTA(DEVICE_NAME);
    }
 
  // Initialize LittleFS
@@ -314,7 +305,7 @@ void Framework::run() {
     if(WiFi.status() != WL_CONNECTED){
       // Do Nothing
     }else{
-     OTAController.handleOTA();
-     MdnsController.loopHandle();
+     otaController.handleOTA();
+     mdnsController.loopHandle();
     }
 }

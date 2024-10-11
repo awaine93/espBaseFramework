@@ -3,16 +3,11 @@
  * 
  * Esp8266 Setup Firmware  
  * 
- * Version 1.4.0
+ * Version 1.1.0
  * 
 */
 
 #define SERIAL_DEBUGGING
-
-
-// Variables for user defined pages
-extern String customDashboardPage;
-
 
 // Import pages
 #import "Pages/WifiFormPage1.h"
@@ -24,16 +19,15 @@ extern String customDashboardPage;
 
 #include "EspBaseFramework.h"
 
+// #ifdef CUSTOM_DASHBOARD
+//   const String dashboardPage = customDashboardPage;
+// #else
+//   #import "Pages/DashboardPage.h"
+//   const String dashboardPage = FPSTR(DASHBOARD_page);
+// #endif
+
+
 /* Pages declaration */
-
-if(customDashboardPage.length()){
-  const String dashboardPage = customDashboardPage;
-}else{
-  #import "Pages/DashboardPage.h"
-  const String dashboardPage = FPSTR(DASHBOARD_page);
-}
-
-
 //  WiFi connected
 const String adminSetPassPage = FPSTR(ADMINSETPASS_page);
 const String adminLoginPage = FPSTR(ADMINLOGIN_page);
@@ -64,7 +58,6 @@ WifiController WifiController;
  * Constructor
  */
 Framework::Framework(AsyncWebServer& server)  : _server(server) {}
-
 
 //AsyncWebServer& Framework::getServer(){
 //  return _server;
@@ -211,7 +204,8 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
       String eepromPass = EepromController.getAdminPass();
 
       if(eepromPass.equals(userPass)){
-         returnRoute = "/dashboard";
+         //returnRoute = "/dashboard";
+         returnRoute = loggedInRoute;
       }else{
          returnRoute = "/";
       }
@@ -225,13 +219,13 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
  }
 
 
-/*
- * Returns the dashboard page
- */
- void Framework::dashboard(AsyncWebServerRequest *request){
-     // server.send(200, "text/html", LittleFS.open("Pages/dashboard.html", "r"));
-     request->send_P(200, "html", dashboardPage.c_str());
- }
+// /*
+//  * Returns the dashboard page
+//  */
+//  void Framework::dashboard(AsyncWebServerRequest *request){
+//      // server.send(200, "text/html", LittleFS.open("Pages/dashboard.html", "r"));
+//      request->send_P(200, "html", dashboardPage.c_str());
+//  }
 
 /*
  * Sets the routes for connected state
@@ -257,9 +251,9 @@ void Framework::connectedRoutes() {
     this->adminLogin(request);
   });
 
-  _server.on("/dashboard", HTTP_GET, [this](AsyncWebServerRequest *request){
-    this->dashboard(request);
-  });
+  // _server.on("/dashboard", HTTP_GET, [this](AsyncWebServerRequest *request){
+  //   this->dashboard(request);
+  // });
 }
 
 

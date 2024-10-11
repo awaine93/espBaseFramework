@@ -21,8 +21,6 @@
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.hpp>
 
-//Include internal Structures
-
 // Include internal Controllers
 #include "EepromController.h"
 #include "WifiController.h"
@@ -32,6 +30,7 @@
 // Optional Settings
 const String DEVICE_NAME = "CHANGE-ME";
 const int WIFI_CON_WAIT = 20;
+extern const String loggedInRoute;
 
 class Framework{
     public:

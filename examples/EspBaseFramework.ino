@@ -3,11 +3,14 @@
 //  * 
 //  * Esp8266 Setup Firmware  
 //  * 
-//  * Version 1.4.0
+//  * Version 1.1.0
 //  * 
 // */
-#include "Framework.h"
+#include "EspBaseFramework.h"
 #include <ESPAsyncWebServer.h>
+#include "Pages/DashboardPage.h"
+
+const String dashboardPage = FPSTR(DASHBOARD_page);
 
 
 AsyncWebServer server(80); 
@@ -17,10 +20,10 @@ Framework framework(server);
  * Main Setup
  */
 void setup() {
-  framework.setup();
+  framework.begin();
 
   framework._server.on("/test", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send( 200, "text/plain", "test");
+      request->send( 200, "text/plain", dashboardPage);
   });
 
 }
@@ -30,6 +33,6 @@ void setup() {
  */
 void loop() {
   
-  framework.loop();
+  framework.run();
 
 }

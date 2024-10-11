@@ -3,7 +3,7 @@
  * 
  * Esp8266 Setup Firmware  
  * 
- * Version 1.4.0
+ * Version 1.1.0
  * 
 */
  

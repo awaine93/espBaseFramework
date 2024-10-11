@@ -27,9 +27,9 @@
 #include "MdnsController.h"
 #include "OTAController.h"
 
-// Optional Settings
-const String DEVICE_NAME = "CHANGE-ME";
-const int WIFI_CON_WAIT = 20;
+// Project Specific Settings
+extern const String DEVICE_NAME = "CHANGE-ME";
+extern int WIFI_CON_WAIT = 20;
 extern const String loggedInRoute;
 
 class Framework{
@@ -38,7 +38,6 @@ class Framework{
         void begin();
         void run();
         AsyncWebServer& _server;
-        //AsyncWebServer& getServer();
     private:
        
         void wifiSelect(AsyncWebServerRequest *request);

@@ -1,12 +1,3 @@
-/*
- * Author Alex Waine
- * 
- * Esp8266 Setup Firmware  
- * 
- * Version 1.1.0
- * 
-*/
- 
 #ifndef EspBaseFramework_h
 #define EspBaseFramework_h
 
@@ -28,8 +19,8 @@
 #include "OTAController.h"
 
 // Project Specific Settings
-extern const String DEVICE_NAME = "CHANGE-ME";
-extern int WIFI_CON_WAIT = 20;
+extern const String DEVICE_NAME;
+extern const int WIFI_CON_WAIT;
 extern const String loggedInRoute;
 
 class Framework{

@@ -1,12 +1,3 @@
-/*
- * Author Alex Waine
- * 
- * Esp8266 Setup Firmware  
- * 
- * Version 1.1.0
- * 
-*/
-
 #ifndef EepromController_h
 #define EepromController_h
 

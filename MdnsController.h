@@ -1,12 +1,3 @@
-/*
- * Author Alex Waine
- * 
- * Esp8266 Setup Firmware  
- * 
- * Version 1.1.0
- * 
-*/
-
 #ifndef MdnsController_h
 #define MdnsController_h
 

@@ -3,7 +3,7 @@
  * 
  * Esp8266 Setup Firmware  
  * 
- * Version 1.4.0
+ * Version 1.1.0
  * 
 */
 
@@ -38,7 +38,6 @@ IPAddress dns_IP(192, 168, 1, 1);
 
 // External Class instances 
 DNSServer dnsServer;
-//AsyncWebServer server(80);
 
 // Internal Class instances 
 EepromController eepromController;
@@ -50,10 +49,6 @@ WifiController wifiController;
  * Constructor
  */
 Framework::Framework(AsyncWebServer& server)  : _server(server) {}
-
-//AsyncWebServer& Framework::getServer(){
-//  return _server;
-//}
 
 /*
  * Shows "Wifi SSID & pass form page"
@@ -209,15 +204,6 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
     request->send( 302, "text/plain", "");
  }
 
-
-// /*
-//  * Returns the dashboard page
-//  */
-//  void Framework::dashboard(AsyncWebServerRequest *request){
-//      // server.send(200, "text/html", LittleFS.open("Pages/dashboard.html", "r"));
-//      request->send_P(200, "html", dashboardPage.c_str());
-//  }
-
 /*
  * Sets the routes for connected state
  */
@@ -241,10 +227,6 @@ void Framework::connectedRoutes() {
   _server.on("/admin/login", HTTP_POST, [this](AsyncWebServerRequest *request){
     this->adminLogin(request);
   });
-
-  // _server.on("/dashboard", HTTP_GET, [this](AsyncWebServerRequest *request){
-  //   this->dashboard(request);
-  // });
 }
 
 
@@ -269,7 +251,6 @@ void Framework::begin() {
    String pass = eepromController.eepromGetWifiPass();
    wifiController.wifiConnTimer(WIFI_CON_WAIT, ssid, pass, DEVICE_NAME);
 
-   // WiFi Connected check 
    if(WiFi.status() != WL_CONNECTED){
       setupCredsRoutine();
       #ifdef SERIAL_DEBUGGING
@@ -284,14 +265,6 @@ void Framework::begin() {
       mdnsController.initMdns(DEVICE_NAME);
       otaController.initOTA(DEVICE_NAME);
    }
-
- // Initialize LittleFS
-  if (!LittleFS.begin()) {
-    #ifdef SERIAL_DEBUGGING
-      Serial.println("LittleFS initialization failed!");
-    #endif
-    return;
-  }
   _server.begin(); 
 }
 
@@ -299,7 +272,6 @@ void Framework::begin() {
  * Main Loop
  */
 void Framework::run() {
-    // Handles any incoming request
     dnsServer.processNextRequest();
 
     if(WiFi.status() != WL_CONNECTED){

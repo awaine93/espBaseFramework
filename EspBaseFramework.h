@@ -28,8 +28,8 @@
 #include "OTAController.h"
 
 // Project Specific Settings
-extern const String DEVICE_NAME = "CHANGE-ME";
-extern int WIFI_CON_WAIT = 20;
+extern const String DEVICE_NAME;
+extern const int WIFI_CON_WAIT;
 extern const String loggedInRoute;
 
 class Framework{

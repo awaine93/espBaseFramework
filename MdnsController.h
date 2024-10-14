@@ -10,11 +10,11 @@
 #ifndef MdnsController_h
 #define MdnsController_h
 
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 
 class MdnsController{
 public:
-   void loopHandle();
+//   void loopHandle();
    void initMdns(String);
 };
 

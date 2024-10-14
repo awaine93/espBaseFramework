@@ -8,7 +8,7 @@
 */
  
 #include "WifiController.h" 
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 
 
 IPAddress selfIP(192, 168, 1, 1);
@@ -55,7 +55,7 @@ void WifiController::setupWifiAp(String deviceName){
      counter++;
   }
 
-  Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
+  Serial.printf("New hostname: %s\n", WiFi.getHostname());
 
  }
 

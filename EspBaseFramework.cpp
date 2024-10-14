@@ -9,6 +9,7 @@
 
 #define SERIAL_DEBUGGING
 
+
 // Import pages
 #include "Pages/WifiFormPage1.h"
 #include "Pages/WifiFormPage2.h"
@@ -278,6 +279,6 @@ void Framework::run() {
       // Do Nothing
     }else{
      otaController.handleOTA();
-     mdnsController.loopHandle();
+     //mdnsController.loopHandle();
     }
 }

@@ -10,7 +10,7 @@
 #ifndef WifiController_h
 #define WifiController_h
 
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 
 class WifiController{
 public:

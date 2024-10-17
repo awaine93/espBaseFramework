@@ -8,8 +8,6 @@
 */
  
 #include "WifiController.h" 
-#include <WiFi.h>
-
 
 IPAddress selfIP(192, 168, 1, 1);
 

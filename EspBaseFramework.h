@@ -10,16 +10,22 @@
 #ifndef EspBaseFramework_h
 #define EspBaseFramework_h
 
+#ifdef ESP32
+  #include <WiFi.h>
+  #include <AsyncTCP.h>
+#else
+  #include <ESP8266WiFi.h>
+  #include <ESPAsyncTCP.h>
+#endif
 
-#include <WiFi.h>
-#include <AsyncTCP.h>
 #include <DNSServer.h>
 #include <EEPROM.h>
 #include <ArduinoOTA.h>
 #include <LittleFS.h>
 #include <ArduinoJson.h>
-#include <ESPAsyncWebServer.h>
 #include <ArduinoJson.hpp>
+#include <ESPAsyncWebServer.h>
+
 
 // Include internal Controllers
 #include "EepromController.h"

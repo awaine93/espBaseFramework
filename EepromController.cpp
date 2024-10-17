@@ -7,7 +7,6 @@
  * 
 */
 
-#include <WiFi.h>
 #include <EEPROM.h>
 #include "EepromController.h" 
 

@@ -8,11 +8,11 @@
 */
 
 #include "MdnsController.h" 
-#include <ESP8266mDNS.h>
 
-void MdnsController::loopHandle(){
-    MDNS.update();
-}
+// void MdnsController::loopHandle(){
+//     MDNS.
+//     MDNS.update();
+// }
 
 void MdnsController::initMdns(String deviceName){
   

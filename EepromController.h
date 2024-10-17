@@ -10,6 +10,14 @@
 #ifndef EepromController_h
 #define EepromController_h
 
+#ifdef ESP32
+  #include <WiFi.h>
+#endif
+
+#ifdef ESP8266
+  #include <ESP8266WiFi.h>
+#endif
+
 class EepromController{
 public:
    void startEeprom();

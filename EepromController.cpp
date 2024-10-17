@@ -7,7 +7,6 @@
  * 
 */
 
-#include <ESP8266WiFi.h>
 #include <EEPROM.h>
 #include "EepromController.h" 
 

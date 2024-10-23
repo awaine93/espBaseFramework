@@ -178,8 +178,7 @@ framework._server.on("/dashboard", HTTP_GET, [](AsyncWebServerRequest *request){
 | Method | Endpoint | Description | Parameters |
 | --- | --- | --- | --- |
 | GET | /generate_204/captive.apple.com/fwlink | Captive portal endpoints. Returns WiFi Form page with pre-scanned SSID options. | None |
-| POST | /wificreds | Stores submitted WiFi credentials in EEPROM and resets device to connect. | ssid: string
-pass: string |
+| POST | /wificreds | Stores submitted WiFi credentials in EEPROM and resets device to connect. | ssid: string, pass: string |
 
 ### Connected / WiFi Station Mode
 
@@ -188,8 +187,7 @@ pass: string |
 | GET | / | Returns admin password setup page or login page based on EEPROM state. | None |
 | GET | /eeprom/clear/all | Factory reset: Clears all EEPROM and resets device. | None |
 | GET | /eeprom/clear/adminpass | Clears admin password from EEPROM. | None |
-| POST | /admin/set/pass | Sets admin configuration password in EEPROM. | pass: string
-confirm: string |
+| POST | /admin/set/pass | Sets admin configuration password in EEPROM. | pass: string, confirm: string |
 | POST | /admin/login | Validates admin login password and redirects accordingly. | pass: string |
 
 ### Framework Class

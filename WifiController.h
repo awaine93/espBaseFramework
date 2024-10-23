@@ -23,7 +23,7 @@ public:
    String getSsidOptions();
    void setupWifiAp(String);
    void forgetWifi();
-   void wifiConnTimer(int, String, String, String);
+   bool wifiConnTimer(int, String, String, String);
 };
 
 #endif

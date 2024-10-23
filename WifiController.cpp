@@ -35,11 +35,13 @@ void WifiController::setupWifiAp(String deviceName){
 /*
  * Attempt to connect to Wifi with N second timer
  */
- void WifiController::wifiConnTimer(int secs, String ssid, String pass, String deviceName){
+ bool WifiController::wifiConnTimer(int secs, String ssid, String pass, String deviceName){
   
   WiFi.mode(WIFI_STA);
   WiFi.hostname(deviceName);
-  WiFi.begin(ssid, pass);
+  if(WiFi.begin(ssid, pass) == 4){
+    return false;
+  }
 
   // 20 Sec count down for WiFi connection
   int counter = 0;
@@ -54,7 +56,7 @@ void WifiController::setupWifiAp(String deviceName){
   }
 
   Serial.printf("New hostname: %s\n", WiFi.getHostname());
-
+  return true;
  }
 
 

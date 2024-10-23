@@ -36,11 +36,9 @@ void EepromController::wipe(){
 void EepromController::storeWifiCreds(String ssid,String pass){
 
   
-// Declare char arrays
   char ssidArray[50];
   char passArray[50];
 
-  // Convert to char array
   ssid.toCharArray(ssidArray, ssid.length()+1);
   pass.toCharArray(passArray, pass.length()+1);
 
@@ -63,7 +61,6 @@ void EepromController::storeWifiCreds(String ssid,String pass){
  */
  String EepromController::eepromGetWifiSsid(){
 
- // Declare char arrays
   char ssidArray[50];
 
   EEPROM.get(0, ssidArray);
@@ -76,7 +73,6 @@ void EepromController::storeWifiCreds(String ssid,String pass){
  */
  String EepromController::eepromGetWifiPass(){
 
- // Declare char arrays
   char passArray[50];
 
   EEPROM.get(50, passArray);
@@ -90,8 +86,6 @@ void EepromController::storeWifiCreds(String ssid,String pass){
  */
 void EepromController::storeAdminPass(String pass){
 
-  
-// Declare char arrays
   char passArray[50];
 
   // Convert to char array
@@ -108,14 +102,15 @@ void EepromController::storeAdminPass(String pass){
  * Gets Configuration password from EEPROM
  */
  String EepromController::isAdminPassSet(){
-
- // Declare char arrays
-  char passCheck[1];
-
-  EEPROM.get(100, passCheck);
   
-  return passCheck;
- }
+  char passCheck[1];
+  EEPROM.get(100, passCheck);
+
+  if(passCheck[0] == '1'){
+    return "1";
+  }
+
+}
 
 
 /*
@@ -123,7 +118,6 @@ void EepromController::storeAdminPass(String pass){
  */
  String EepromController::getAdminPass(){
 
- // Declare char arrays
   char passArray[50];
 
   EEPROM.get(101, passArray);

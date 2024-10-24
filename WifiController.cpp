@@ -1,13 +1,10 @@
 #include "WifiController.h" 
 
-
 #ifdef ESP32
     #include <WiFi.h>
 #else
     #include <ESP8266WiFi.h>
 #endif
-
-
 
 IPAddress selfIP(192, 168, 1, 1);
 
@@ -35,11 +32,13 @@ void WifiController::setupWifiAp(String deviceName){
 /*
  * Attempt to connect to Wifi with N second timer
  */
- void WifiController::wifiConnTimer(int secs, String ssid, String pass, String deviceName){
+ bool WifiController::wifiConnTimer(int secs, String ssid, String pass, String deviceName){
   
   WiFi.mode(WIFI_STA);
   WiFi.hostname(deviceName);
-  WiFi.begin(ssid, pass);
+  if(WiFi.begin(ssid, pass) == 4){
+    return false;
+  }
 
   // 20 Sec count down for WiFi connection
   int counter = 0;
@@ -52,11 +51,14 @@ void WifiController::setupWifiAp(String deviceName){
       }
      counter++;
   }
+
   #ifdef ESP32
     Serial.printf("New hostname: %s\n", WiFi.getHostname());
   #else
     Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
   #endif
+   
+  return true;
  }
 
 

@@ -7,6 +7,7 @@
     #include <ESP8266WiFi.h>
 #endif
 
+
 class EepromController{
 public:
    void startEeprom();

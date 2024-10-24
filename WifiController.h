@@ -6,12 +6,13 @@
 #else
     #include <ESP8266WiFi.h>
 #endif
+
 class WifiController{
 public:
    String getSsidOptions();
    void setupWifiAp(String);
    void forgetWifi();
-   void wifiConnTimer(int, String, String, String);
+   bool wifiConnTimer(int, String, String, String);
 };
 
 #endif

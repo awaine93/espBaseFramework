@@ -1,5 +1,6 @@
 #define SERIAL_DEBUGGING
 
+
 // Import pages
 #include "Pages/WifiFormPage1.h"
 #include "Pages/WifiFormPage2.h"
@@ -150,10 +151,7 @@ void Framework::clearEepromAdminPass(AsyncWebServerRequest *request) {
  * Sets Configuration password in EEPROM
  */
 void Framework::setAdminPass(AsyncWebServerRequest *request) {
- // Check if the admin pass is NOT set
   if(eepromController.isAdminPassSet() != "1"){
-  
-    // Get input credentials
     String pass = request->arg("pass");
     String confirm = request->arg("confirm");
 
@@ -163,7 +161,6 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
     }
   }
   
-  // Send back to main root page to login 
   request->redirect("/");
   request->send(302, "text/plain", "");
   
@@ -240,9 +237,8 @@ void Framework::begin() {
 
    String ssid = eepromController.eepromGetWifiSsid();
    String pass = eepromController.eepromGetWifiPass();
-   wifiController.wifiConnTimer(WIFI_CON_WAIT, ssid, pass, DEVICE_NAME);
 
-   if(WiFi.status() != WL_CONNECTED){
+   if(!wifiController.wifiConnTimer(WIFI_CON_WAIT, ssid, pass, DEVICE_NAME) || WiFi.status() != WL_CONNECTED){
       setupCredsRoutine();
       #ifdef SERIAL_DEBUGGING
       Serial.println("please connect to WiFi");
@@ -263,12 +259,11 @@ void Framework::begin() {
  * Main Loop
  */
 void Framework::run() {
-    dnsServer.processNextRequest();
-
+    
     if(WiFi.status() != WL_CONNECTED){
-      // Do Nothing
+      dnsServer.processNextRequest();
     }else{
      otaController.handleOTA();
-     mdnsController.loopHandle();
+     //mdnsController.loopHandle();
     }
 }

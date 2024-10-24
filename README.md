@@ -2,7 +2,7 @@
 
 GitHub : https://github.com/awaine93/espBaseFramework
 
-Latest Release : [![EspBaseFramework 1.2.0 (latest by date)](https://img.shields.io/github/v/release/awaine93/espBaseFramework?include_prereleases)](https://github.com/awaine93/espBaseFramework/releases)
+Latest Release : 1.2.0
 README / Docs version : V1.2.0
 
 [Release Notes](https://www.notion.so/Release-Notes-11cf19cb7e91806b9e3aeee0a949afde?pvs=21)

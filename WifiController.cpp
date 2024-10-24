@@ -1,5 +1,12 @@
 #include "WifiController.h" 
-#include <ESP8266WiFi.h>
+
+
+#ifdef ESP32
+    #include <WiFi.h>
+#else
+    #include <ESP8266WiFi.h>
+#endif
+
 
 
 IPAddress selfIP(192, 168, 1, 1);
@@ -45,9 +52,11 @@ void WifiController::setupWifiAp(String deviceName){
       }
      counter++;
   }
-
-  Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
-
+  #ifdef ESP32
+    Serial.printf("New hostname: %s\n", WiFi.getHostname());
+  #else
+    Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
+  #endif
  }
 
 

@@ -1,9 +1,15 @@
 #ifndef EspBaseFramework_h
 #define EspBaseFramework_h
 
+#ifdef ESP32
+    #include <WiFi.h>
+    #include <AsyncTCP.h>
+#else
+    #include <ESP8266WiFi.h>
+    #include <ESPAsyncTCP.h>
+#endif
 
-#include <ESP8266WiFi.h>
-#include <ESPAsyncTCP.h>
+
 #include <DNSServer.h>
 #include <EEPROM.h>
 #include <ArduinoOTA.h>

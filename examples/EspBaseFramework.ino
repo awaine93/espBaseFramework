@@ -2,6 +2,9 @@
 #include <ESPAsyncWebServer.h>
 #include "Pages/DashboardPage.h"
 
+// Uncomment for ESP32
+//#define ESP32
+
 const String dashboardPage = FPSTR(DASHBOARD_page);
 
 const String DEVICE_NAME = "CHANGE-ME";

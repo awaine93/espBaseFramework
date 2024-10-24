@@ -1,6 +1,9 @@
 # EspBaseFramework
 
-Current version : V1.1.0
+GitHub : https://github.com/awaine93/espBaseFramework
+
+Latest Release : ![GitHub release (latest by date)](https://img.shields.io/github/v/release/yourusername/yourproject)
+README / Docs version : V1.2.0
 
 [Release Notes](https://www.notion.so/Release-Notes-11cf19cb7e91806b9e3aeee0a949afde?pvs=21)
 
@@ -75,16 +78,29 @@ PlatformIO requires that any project files need to be located in a src directory
 
 ### Configuring The Project
 
-To use the EspBaseFramework in your project you will need to create an instance of a `AsyncWebServer` with your desired port, and this is then passed into the framework class as a parameter on initialization.
+To use the EspBaseFramework in your project you will need to include the EspBaseFramework and AsyncWebServer library header files.
 
-```bash
-AsyncWebServer server(80); 
+```arduino
+#include "EspBaseFramework.h"
+#include <ESPAsyncWebServer.h>
+```
+
+If you are using a ESP32, you will need to define this as some libraries used in the framework are different.
+
+```arduino
+#define ESP32
+```
+
+Create an instance of a `AsyncWebServer` with your desired port, and this is then passed into the framework class as a parameter on initialization.
+
+```arduino
+AsyncWebServer server(80);
 Framework framework(server);
 ```
 
 You will need to define configuration that will be used within the framework within your project 
 
-```jsx
+```arduino
 const String DEVICE_NAME = "CHANGE-ME";
 const String loggedInRoute = "/dashboard";
 const int WIFI_CON_WAIT = 20;
@@ -96,7 +112,7 @@ const int WIFI_CON_WAIT = 20;
 
 Within the setup and loop functions of your project you need to call the Frameworks begin() and run() methods. 
 
-```bash
+```arduino
 void setup() {
   framework.begin();
 	// Your Code Here
@@ -178,7 +194,8 @@ framework._server.on("/dashboard", HTTP_GET, [](AsyncWebServerRequest *request){
 | Method | Endpoint | Description | Parameters |
 | --- | --- | --- | --- |
 | GET | /generate_204/captive.apple.com/fwlink | Captive portal endpoints. Returns WiFi Form page with pre-scanned SSID options. | None |
-| POST | /wificreds | Stores submitted WiFi credentials in EEPROM and resets device to connect. | ssid: string, pass: string |
+| POST | /wificreds | Stores submitted WiFi credentials in EEPROM and resets device to connect. | ssid: string
+pass: string |
 
 ### Connected / WiFi Station Mode
 
@@ -187,7 +204,8 @@ framework._server.on("/dashboard", HTTP_GET, [](AsyncWebServerRequest *request){
 | GET | / | Returns admin password setup page or login page based on EEPROM state. | None |
 | GET | /eeprom/clear/all | Factory reset: Clears all EEPROM and resets device. | None |
 | GET | /eeprom/clear/adminpass | Clears admin password from EEPROM. | None |
-| POST | /admin/set/pass | Sets admin configuration password in EEPROM. | pass: string, confirm: string |
+| POST | /admin/set/pass | Sets admin configuration password in EEPROM. | pass: string
+confirm: string |
 | POST | /admin/login | Validates admin login password and redirects accordingly. | pass: string |
 
 ### Framework Class

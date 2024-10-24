@@ -206,15 +206,6 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
  }
 
 
-void Framework::testFs(AsyncWebServerRequest *request) {
-  if (!LittleFS.exists("/index.html")) {
-    request->send(404, "text/plain", "File not found");
-  }
-  request->send(LittleFS, "/index.html", "text/html");
-}
-
-
-
 /*
  * Sets the routes for connected state
  */
@@ -266,13 +257,10 @@ void Framework::begin() {
    eepromController.startEeprom();   
    delay(1000);
 
-   String ssid = eepromController.eepromGetWifiSsid();
-   String pass = eepromController.eepromGetWifiPass();
-
-   if(!wifiController.wifiConnTimer(WIFI_CON_WAIT, ssid, pass, DEVICE_NAME) || WiFi.status() != WL_CONNECTED){
+   if(!wifiController.wifiConnTimer(WIFI_CON_WAIT, eepromController.eepromGetWifiSsid(), eepromController.eepromGetWifiPass(), DEVICE_NAME) || WiFi.status() != WL_CONNECTED){
       setupCredsRoutine();
       #ifdef SERIAL_DEBUGGING
-      Serial.println("please connect to WiFi");
+        Serial.println("please connect to WiFi");
       #endif
    }else{ 
       #ifdef SERIAL_DEBUGGING
@@ -294,7 +282,7 @@ void Framework::run() {
     if(WiFi.status() != WL_CONNECTED){
       dnsServer.processNextRequest();
     }else{
-     otaController.handleOTA();
-     mdnsController.loopHandle();
+      otaController.handleOTA();
+      mdnsController.loopHandle();
     }
 }

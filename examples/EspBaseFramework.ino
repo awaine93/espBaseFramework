@@ -25,11 +25,6 @@ void setup() {
 
       request->send(LittleFS, "/DashboardPage.html", "text/html");
   });
-
-  framework._server.on("/testfs", HTTP_GET, [](AsyncWebServerRequest *request){
-      framework.testFs(request);
-  });
-
 }
 
 /*

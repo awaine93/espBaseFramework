@@ -35,9 +35,9 @@ class Framework{
         Framework(AsyncWebServer& server);
         void begin();
         void run();
+        void testFs(AsyncWebServerRequest *request);
         AsyncWebServer& _server;
     private:
-       
         void wifiSelect(AsyncWebServerRequest *request);
         void setWifiCreds(AsyncWebServerRequest *request);
         void notConnectedRoutes();

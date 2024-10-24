@@ -15,13 +15,12 @@ void EepromController::startEeprom(){
      EEPROM.begin(512);
 }
 
-
 /*
  * Clears EEPROM
  */
 void EepromController::wipe(){
   
-   for (int i = 0 ; i < EEPROM.length() ; i++) {
+   for (int i = 0 ; i < (int) EEPROM.length() ; i++) {
         EEPROM.write(i, -1);
       }
 
@@ -107,7 +106,7 @@ void EepromController::storeAdminPass(String pass){
   if(passCheck[0] == '1'){
     return "1";
   }
-
+  return "0";
 }
 
 

@@ -1,27 +1,6 @@
 #define SERIAL_DEBUGGING
 
-
-// Import pages
-#include "Pages/WifiFormPage1.h"
-#include "Pages/WifiFormPage2.h"
-#include "Pages/ClearEepromPage.h"
-#include "Pages/RestartPage.h"
-#include "Pages/AdminSetPassPage.h"
-#include "Pages/AdminLoginPage.h"
-
 #include "EspBaseFramework.h"
-
-/* Pages declaration */
-//  WiFi connected
-const String adminSetPassPage = FPSTR(ADMINSETPASS_page);
-const String adminLoginPage = FPSTR(ADMINLOGIN_page);
-const String clearEepromPage = FPSTR(CLEAREEPROM_page);
-
-//  Non WiFi connected 
-const String wifiFormPage1 = FPSTR(WIFIFORM_page_1);
-const String wifiFormPage2 = FPSTR(WIFIFORM_page_2);
-const String RestartPage = FPSTR(RESTART_page);
-
 
 // Internal variables
 const byte DNS_PORT = 53;
@@ -46,6 +25,13 @@ Framework::Framework(AsyncWebServer& server)  : _server(server) {}
  * Shows "Wifi SSID & pass form page"
  */
 void Framework::wifiSelect(AsyncWebServerRequest *request) {
+    if (!LittleFS.exists("/WifiFormPage1.html") || !LittleFS.exists("/WifiFormPage2.html")) {
+      request->send(404, "text/plain", "Page not found");
+    }
+
+    String wifiFormPage1 = LittleFS.open("/WifiFormPage1.html", "r").readString();
+    String wifiFormPage2 = LittleFS.open("/WifiFormPage2.html", "r").readString();
+
     String page = wifiFormPage1 + wifiOptions + wifiFormPage2;
     request->send_P(200, "text/html", page.c_str());
 }
@@ -61,7 +47,11 @@ void Framework::setWifiCreds(AsyncWebServerRequest *request) {
     eepromController.wipe();
     eepromController.storeWifiCreds(ssidInput, passInput);
 
-    request->send_P(200, "text/html", RestartPage.c_str());
+    if (!LittleFS.exists("/RestartPage.html")) {
+      request->send(404, "text/plain", "Page not found");
+    }
+
+    request->send(LittleFS, "/RestartPage.html", "text/html");
 
     delay(10000);
 
@@ -97,15 +87,24 @@ _server.on("/captive.apple.com", HTTP_GET, [this](AsyncWebServerRequest *request
  * Setup WiFi main function
  */
 void Framework::setupCredsRoutine() {
-   wifiOptions = wifiController.getSsidOptions();
-   wifiController.setupWifiAp(DEVICE_NAME);
-   dnsServer.start(DNS_PORT, "*", dns_IP);
+  wifiOptions = wifiController.getSsidOptions();
+  wifiController.setupWifiAp(DEVICE_NAME);
+  dnsServer.start(DNS_PORT, "*", dns_IP);
   
-   notConnectedRoutes();
+  notConnectedRoutes();
 
-   // Reply to all requests with same HTML
-   _server.onNotFound([](AsyncWebServerRequest *request){
+  // Reply to all requests with same HTML
+  _server.onNotFound([](AsyncWebServerRequest *request){
+    
+
+    if (!LittleFS.exists("/WifiFormPage1.html") || !LittleFS.exists("/WifiFormPage2.html")) {
+      request->send(404, "text/plain", "Page not found");
+    }
+
+    String wifiFormPage1 = LittleFS.open("/WifiFormPage1.html", "r").readString();
+    String wifiFormPage2 = LittleFS.open("/WifiFormPage2.html", "r").readString();
     String page = wifiFormPage1 + wifiOptions + wifiFormPage2;
+
     request->send_P(200, "text/html", page.c_str());
   });
 }
@@ -119,9 +118,16 @@ void Framework::setupCredsRoutine() {
 void Framework::landing(AsyncWebServerRequest *request) {
     // If no pass has been set, return the set password page, otherwise return the login page 
     if(eepromController.isAdminPassSet() == "1") {
-        request->send_P(200, "text/html", adminLoginPage.c_str());
+         if (!LittleFS.exists("/AdminLoginPage.html")) {
+          request->send(404, "text/plain", "Page not found");
+        }
+        request->send(LittleFS, "/AdminLoginPage.html", "text/html");
     } else {
-        request->send_P(200, "text/html", adminSetPassPage.c_str());
+        if (!LittleFS.exists("/AdminSetPassPage.html")) {
+          request->send(404, "text/plain", "Page not found");
+        }
+        request->send(LittleFS, "/AdminSetPassPage.html", "text/html");
+
     }
 }
 
@@ -129,11 +135,18 @@ void Framework::landing(AsyncWebServerRequest *request) {
  * Clear EEPROM page
  */
 void Framework::clearEepromFull(AsyncWebServerRequest *request) {
-     eepromController.wipe();
-     request->send(200, "text/html", clearEepromPage);
-     wifiController.forgetWifi();
-     delay(10000);
-     ESP.restart();
+    
+    if (!LittleFS.exists("/ClearEepromPage.html")) {
+      request->send(404, "text/plain", "Page not found");
+    }
+
+    request->send(LittleFS, "/ClearEepromPage.html", "text/html");
+    
+    delay(10000);
+    eepromController.wipe();
+    wifiController.forgetWifi();
+    
+    ESP.restart();
 }
 
 
@@ -192,6 +205,7 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
     request->send( 302, "text/plain", "");
  }
 
+
 /*
  * Sets the routes for connected state
  */
@@ -232,16 +246,21 @@ void Framework::begin() {
       Serial.println();
     #endif
 
+    if (!LittleFS.begin()) {
+      #ifdef SERIAL_DEBUGGING
+        Serial.println("Failed to mount file system");
+      #endif
+
+      return;
+    }
+
    eepromController.startEeprom();   
    delay(1000);
 
-   String ssid = eepromController.eepromGetWifiSsid();
-   String pass = eepromController.eepromGetWifiPass();
-
-   if(!wifiController.wifiConnTimer(WIFI_CON_WAIT, ssid, pass, DEVICE_NAME) || WiFi.status() != WL_CONNECTED){
+   if(!wifiController.wifiConnTimer(WIFI_CON_WAIT, eepromController.eepromGetWifiSsid(), eepromController.eepromGetWifiPass(), DEVICE_NAME) || WiFi.status() != WL_CONNECTED){
       setupCredsRoutine();
       #ifdef SERIAL_DEBUGGING
-      Serial.println("please connect to WiFi");
+        Serial.println("please connect to WiFi");
       #endif
    }else{ 
       #ifdef SERIAL_DEBUGGING
@@ -263,7 +282,7 @@ void Framework::run() {
     if(WiFi.status() != WL_CONNECTED){
       dnsServer.processNextRequest();
     }else{
-     otaController.handleOTA();
-     //mdnsController.loopHandle();
+      otaController.handleOTA();
+      mdnsController.loopHandle();
     }
 }

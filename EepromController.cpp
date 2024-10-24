@@ -1,14 +1,12 @@
-/*
- * Author Alex Waine
- * 
- * Esp8266 Setup Firmware  
- * 
- * Version 1.1.0
- * 
-*/
-
 #include <EEPROM.h>
 #include "EepromController.h" 
+
+#ifdef ESP32
+    #include <WiFi.h>
+#else
+    #include <ESP8266WiFi.h>
+#endif
+
 
 /*
  * Start EEPROM

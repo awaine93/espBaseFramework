@@ -1,12 +1,3 @@
-/*
- * Author Alex Waine
- * 
- * Esp8266 Setup Firmware  
- * 
- * Version 1.1.0
- * 
-*/
-
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "OTAController.h"

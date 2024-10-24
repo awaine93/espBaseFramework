@@ -1,12 +1,3 @@
-/*
- * Author Alex Waine
- * 
- * Esp8266 Setup Firmware  
- * 
- * Version 1.1.0
- * 
-*/
-
 #ifndef OTAController_h
 #define OTAController_h
 

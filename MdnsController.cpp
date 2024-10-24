@@ -15,10 +15,15 @@ void MdnsController::loopHandle(){
 void MdnsController::initMdns(String deviceName){
   
    if (!MDNS.begin(deviceName)) {
-    Serial.println("Error setting up MDNS responder!");
+    #ifdef SERIAL_DEBUGGING
+      Serial.println("Error setting up MDNS responder!");
+    #endif
   }
 
   // Add service to MDNS-SD
   MDNS.addService("http", "tcp", 80);
-  //Serial.println("mDNS responder started");
+
+  #ifdef SERIAL_DEBUGGING
+    Serial.println("mDNS responder started");
+  #endif
 }

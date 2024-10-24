@@ -3,9 +3,13 @@
 
 #ifdef ESP32
     #include <ESPmDNS.h>
+    #include <WiFi.h>
 #else
     #include <ESP8266mDNS.h>
+    #include <ESP8266WiFi.h>
 #endif
+
+
 
 
 class MdnsController{

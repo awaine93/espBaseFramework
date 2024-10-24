@@ -45,19 +45,23 @@ void WifiController::setupWifiAp(String deviceName){
   while(WiFi.status() != WL_CONNECTED){
 
     delay(1000);
-    Serial.println(counter);
+    #ifdef SERIAL_DEBUGGING
+      Serial.println(counter);
+    #endif
       if(counter == secs){
         break;
       }
      counter++;
   }
 
-  #ifdef ESP32
-    Serial.printf("New hostname: %s\n", WiFi.getHostname());
-  #else
-    Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
-  #endif
-   
+  #ifdef SERIAL_DEBUGGING
+    #ifdef ESP32
+      Serial.printf("New hostname: %s\n", WiFi.getHostname());
+    #else
+      Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
+    #endif
+   #endif
+
   return true;
  }
 
@@ -75,8 +79,11 @@ String WifiController::getSsidOptions(){
 
     for (int i = 0; i < n; i++)
     {
-      Serial.println(WiFi.SSID(i));
+      #ifdef SERIAL_DEBUGGING
+        Serial.println(WiFi.SSID(i));
+      #endif
       html = html + "<option value='"+WiFi.SSID(i)+"'>" + WiFi.SSID(i)+"</option>";
     }
-      return html;
+    
+    return html;
 }

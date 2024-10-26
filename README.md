@@ -34,7 +34,7 @@ cd /path/to/your/project
 and clone the EspBaseFramework into a lib directory as a submodule using the following command:
 
 ```bash
-git submodule add https://github.com/awaine93/EspBaseFramework.git lib/EspBaseFramework
+git submodule add git@github.com:awaine93/espBaseFramework.git lib/EspBaseFramework
 ```
 
 ### PlatformIO

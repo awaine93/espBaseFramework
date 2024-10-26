@@ -21,7 +21,7 @@ void MdnsController::initMdns(String deviceName){
   }
 
   // Add service to MDNS-SD
-  MDNS.addService("http", "tcp", 80);
+  MDNS.addService("http", "tcp", 5353);
 
   #ifdef SERIAL_DEBUGGING
     Serial.println("mDNS responder started");

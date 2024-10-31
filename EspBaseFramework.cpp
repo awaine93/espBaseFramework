@@ -25,11 +25,11 @@ Framework::Framework(AsyncWebServer& server)  : _server(server) {}
  * Shows "Wifi SSID & pass form page"
  */
 void Framework::wifiSelect(AsyncWebServerRequest *request) {
-    if (!LittleFS.exists("/WifiFormPage1.html")) { 
+    if (!LittleFS.exists("/WifiFormPage.html")) { 
       request->send(404, "text/plain", "Page not found");
     }
 
-    String html = LittleFS.open("/WifiFormPage1.html", "r").readString();
+    String html = LittleFS.open("/WifiFormPage.html", "r").readString();
     html.replace("{{ssid_options}}", wifiOptions);
   
     std::map<String, String> params;

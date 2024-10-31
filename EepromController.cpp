@@ -39,12 +39,6 @@ void EepromController::storeWifiCreds(String ssid,String pass){
   ssid.toCharArray(ssidArray, ssid.length()+1);
   pass.toCharArray(passArray, pass.length()+1);
 
-
-  //TODO:: DELETE THIS ON PRODUCTION
-  Serial.println(ssidArray);
-  Serial.println(passArray);
-
-
   EEPROM.put(0, ssidArray);
   EEPROM.put(50, passArray);
   EEPROM.commit();
@@ -106,7 +100,9 @@ void EepromController::storeAdminPass(String pass){
   if(passCheck[0] == '1'){
     return "1";
   }
+  
   return "0";
+ 
 }
 
 

@@ -25,15 +25,17 @@ Framework::Framework(AsyncWebServer& server)  : _server(server) {}
  * Shows "Wifi SSID & pass form page"
  */
 void Framework::wifiSelect(AsyncWebServerRequest *request) {
-    if (!LittleFS.exists("/WifiFormPage1.html") || !LittleFS.exists("/WifiFormPage2.html")) {
+    if (!LittleFS.exists("/WifiFormPage1.html")) { 
       request->send(404, "text/plain", "Page not found");
     }
 
-    String wifiFormPage1 = LittleFS.open("/WifiFormPage1.html", "r").readString();
-    String wifiFormPage2 = LittleFS.open("/WifiFormPage2.html", "r").readString();
+    String html = LittleFS.open("/WifiFormPage1.html", "r").readString();
+    html.replace("{{ssid_options}}", wifiOptions);
+  
+    std::map<String, String> params;
+    params["{{ssid_options}}"] = wifiOptions;
 
-    String page = wifiFormPage1 + wifiOptions + wifiFormPage2;
-    request->send_P(200, "text/html", page.c_str());
+    request->send_P(200, "text/html", html.c_str());
 }
 
 /*
@@ -94,18 +96,8 @@ void Framework::setupCredsRoutine() {
   notConnectedRoutes();
 
   // Reply to all requests with same HTML
-  _server.onNotFound([](AsyncWebServerRequest *request){
-    
-
-    if (!LittleFS.exists("/WifiFormPage1.html") || !LittleFS.exists("/WifiFormPage2.html")) {
-      request->send(404, "text/plain", "Page not found");
-    }
-
-    String wifiFormPage1 = LittleFS.open("/WifiFormPage1.html", "r").readString();
-    String wifiFormPage2 = LittleFS.open("/WifiFormPage2.html", "r").readString();
-    String page = wifiFormPage1 + wifiOptions + wifiFormPage2;
-
-    request->send_P(200, "text/html", page.c_str());
+  _server.onNotFound([this](AsyncWebServerRequest *request){
+      this->wifiSelect(request);
   });
 }
 
@@ -135,16 +127,15 @@ void Framework::landing(AsyncWebServerRequest *request) {
  * Clear EEPROM page
  */
 void Framework::clearEepromFull(AsyncWebServerRequest *request) {
-    
+   
     if (!LittleFS.exists("/ClearEepromPage.html")) {
       request->send(404, "text/plain", "Page not found");
     }
 
     request->send(LittleFS, "/ClearEepromPage.html", "text/html");
-    
-    delay(10000);
     eepromController.wipe();
     wifiController.forgetWifi();
+    delay(5000);
     
     ESP.restart();
 }
@@ -168,7 +159,7 @@ void Framework::setAdminPass(AsyncWebServerRequest *request) {
     String pass = request->arg("pass");
     String confirm = request->arg("confirm");
 
-    // Validate (TODO :: need to validate not empty fields & standard password  stuff )
+    // Validate (TODO :: need to validate not empty fields & standard password stuff)
     if(pass.equals(confirm)){
       eepromController.storeAdminPass(pass);
     }

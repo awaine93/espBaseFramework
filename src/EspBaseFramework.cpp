@@ -18,25 +18,31 @@ WifiController wifiController;
 
 /*
  * Constructor
+ *
  */
 Framework::Framework(AsyncWebServer& server)  : _server(server) {}
 
 /*
  * Shows "Wifi SSID & pass form page"
  */
+void Framework::wifiSelectOptions(AsyncWebServerRequest *request) {
+    request->send(200, "text/html", wifiOptions);
+}
+
 void Framework::wifiSelect(AsyncWebServerRequest *request) {
-    if (!LittleFS.exists("/WifiFormPage.html")) { 
+    String filePath = "/nonConnected/layout.html.gz";
+    
+    if (!LittleFS.exists(filePath)) { 
       request->send(404, "text/plain", "Page not found");
     }
 
-    String html = LittleFS.open("/WifiFormPage.html", "r").readString();
-    html.replace("{{ssid_options}}", wifiOptions);
-  
-    std::map<String, String> params;
-    params["{{ssid_options}}"] = wifiOptions;
-
-    request->send_P(200, "text/html", html.c_str());
+    AsyncWebServerResponse *response = request->beginResponse(LittleFS, filePath, "text/html");
+    response->addHeader("Content-Encoding", "gzip");
+    
+    request->send(response); 
 }
+
+
 
 /*
  * Sets WiFi Credentials in EEPROM
@@ -49,11 +55,13 @@ void Framework::setWifiCreds(AsyncWebServerRequest *request) {
     eepromController.wipe();
     eepromController.storeWifiCreds(ssidInput, passInput);
 
-    if (!LittleFS.exists("/RestartPage.html")) {
+    String filePath = "/nonConnected/RestartPage.html";
+
+    if (!LittleFS.exists(filePath)) {
       request->send(404, "text/plain", "Page not found");
     }
 
-    request->send(LittleFS, "/RestartPage.html", "text/html");
+    request->send(LittleFS, filePath, "text/html");
 
     delay(10000);
 
@@ -83,6 +91,10 @@ _server.on("/captive.apple.com", HTTP_GET, [this](AsyncWebServerRequest *request
   _server.on("/wificreds", HTTP_POST, [this](AsyncWebServerRequest *request){
     this->setWifiCreds(request);
   });
+
+  _server.on("/ssid_options", HTTP_GET, [this](AsyncWebServerRequest *request){
+    this->wifiSelectOptions(request);
+  });
 }
 
 /*
@@ -110,15 +122,15 @@ void Framework::setupCredsRoutine() {
 void Framework::landing(AsyncWebServerRequest *request) {
     // If no pass has been set, return the set password page, otherwise return the login page 
     if(eepromController.isAdminPassSet() == "1") {
-         if (!LittleFS.exists("/AdminLoginPage.html")) {
+         if (!LittleFS.exists("/connected/AdminLoginPage.html")) {
           request->send(404, "text/plain", "Page not found");
         }
-        request->send(LittleFS, "/AdminLoginPage.html", "text/html");
+        request->send(LittleFS, "/connected/AdminLoginPage.html", "text/html");
     } else {
-        if (!LittleFS.exists("/AdminSetPassPage.html")) {
+        if (!LittleFS.exists("/connected/AdminSetPassPage.html")) {
           request->send(404, "text/plain", "Page not found");
         }
-        request->send(LittleFS, "/AdminSetPassPage.html", "text/html");
+        request->send(LittleFS, "/connected/AdminSetPassPage.html", "text/html");
 
     }
 }
@@ -222,6 +234,22 @@ void Framework::connectedRoutes() {
   });
 }
 
+void Framework::serveHtmx(){
+   _server.on("/htmx", HTTP_GET, [](AsyncWebServerRequest *request){
+    String filePath = "/htmx.min.js.gz";
+
+    if (!LittleFS.exists(filePath)) { 
+      request->send(404, "text/plain", "Page not found");
+      return;
+    }
+
+    AsyncWebServerResponse *response = request->beginResponse(LittleFS, filePath, "application/gzip");
+    response->addHeader("Content-Encoding", "gzip");
+    
+    request->send(response);
+
+  }); 
+}
 
 void Framework::startEeprom() {
     EEPROM.begin(512);
@@ -247,6 +275,8 @@ void Framework::begin() {
 
    eepromController.startEeprom();   
    delay(1000);
+
+  serveHtmx();
 
    if(!wifiController.wifiConnTimer(WIFI_CON_WAIT, eepromController.eepromGetWifiSsid(), eepromController.eepromGetWifiPass(), DEVICE_NAME) || WiFi.status() != WL_CONNECTED){
       setupCredsRoutine();

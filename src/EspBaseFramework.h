@@ -39,6 +39,7 @@ class Framework{
         AsyncWebServer& _server;
     private:
         void wifiSelect(AsyncWebServerRequest *request);
+        void wifiSelectOptions(AsyncWebServerRequest *request);
         void setWifiCreds(AsyncWebServerRequest *request);
         void notConnectedRoutes();
         void setupCredsRoutine();
@@ -50,6 +51,7 @@ class Framework{
         void dashboard(AsyncWebServerRequest *request);
         void connectedRoutes();
         void startEeprom();
+        void serveHtmx();
 };
 
 #endif

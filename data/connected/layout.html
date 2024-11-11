@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/htmx"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connected Layout</title>
+</head>
+<body>
+
+    <div hx-get="/your-endpoint" hx-trigger="load" hx-target="#content">
+
+        
+    </div>
+        
+    
+    </body>
+    <style>
+    header {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+    header h1 {
+        font-size: 2rem;
+        font-weight: bolder;
+        margin-bottom: 0;
+    }
+    header h1, header p {
+        width: 100%;
+        text-align: center;
+        font-family: arial, "helvetica";
+    }
+    #wifi_config{
+        width: 90%;
+        max-width: 400px;
+        display: flex;
+        margin: 0 auto;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    #wifi_config input{
+        width: 100%;
+        padding: .7rem;
+        margin: .5rem 0 1rem;
+    }
+    #wifi_config input[type="submit"]{
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        font-weight: 900;
+    }
+    #wifi_config label {
+        width: 100%;
+        font-family: arial, "helvetica";
+    }
+    
+    #wifi_config select {
+        width: 100%;
+        padding: .7rem;
+        margin: .5rem 0 1rem;
+        border: solid 1px #8e8e8e;
+        background: #fff;
+    }
+    </style>
+    </html>

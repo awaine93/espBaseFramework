@@ -32,7 +32,6 @@ void EepromController::wipe(){
  */
 void EepromController::storeWifiCreds(String ssid,String pass){
 
-  
   char ssidArray[50];
   char passArray[50];
 
@@ -42,8 +41,6 @@ void EepromController::storeWifiCreds(String ssid,String pass){
   EEPROM.put(0, ssidArray);
   EEPROM.put(50, passArray);
   EEPROM.commit();
-
-
 }
 
 

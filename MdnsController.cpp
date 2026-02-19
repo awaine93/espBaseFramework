@@ -6,6 +6,8 @@
   #include <ESP8266mDNS.h>
 #endif
 
+#define SERIAL_DEBUGGING
+
 void MdnsController::loopHandle(){
     #ifndef ESP32
       MDNS.update();

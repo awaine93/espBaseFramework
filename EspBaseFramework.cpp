@@ -25,8 +25,8 @@ Framework::Framework(AsyncWebServer& server)  : _server(server) {}
  * Shows "Wifi SSID & pass form page"
  */
 void Framework::wifiSelect(AsyncWebServerRequest *request) {
-    if (!LittleFS.exists("/WifiFormPage.html")) { 
-      request->send(404, "text/plain", "Page not found");
+    if (!LittleFS.exists("/WifiFormPage1.html") || !LittleFS.exists("/WifiFormPage2.html")) {
+      request->send(404, "text/plain", "Page not found: wifi form pages");
     }
 
     String html = LittleFS.open("/WifiFormPage.html", "r").readString();
@@ -50,7 +50,7 @@ void Framework::setWifiCreds(AsyncWebServerRequest *request) {
     eepromController.storeWifiCreds(ssidInput, passInput);
 
     if (!LittleFS.exists("/RestartPage.html")) {
-      request->send(404, "text/plain", "Page not found");
+      request->send(404, "text/plain", "Page not found: Restart");
     }
 
     request->send(LittleFS, "/RestartPage.html", "text/html");
@@ -96,8 +96,18 @@ void Framework::setupCredsRoutine() {
   notConnectedRoutes();
 
   // Reply to all requests with same HTML
-  _server.onNotFound([this](AsyncWebServerRequest *request){
-      this->wifiSelect(request);
+  _server.onNotFound([](AsyncWebServerRequest *request){
+    
+
+    if (!LittleFS.exists("/WifiFormPage1.html") || !LittleFS.exists("/WifiFormPage2.html")) {
+      request->send(404, "text/plain", "Page not found: WiFi pages, setupcreds");
+    }
+
+    String wifiFormPage1 = LittleFS.open("/WifiFormPage1.html", "r").readString();
+    String wifiFormPage2 = LittleFS.open("/WifiFormPage2.html", "r").readString();
+    String page = wifiFormPage1 + wifiOptions + wifiFormPage2;
+
+    request->send_P(200, "text/html", page.c_str());
   });
 }
 
@@ -111,12 +121,12 @@ void Framework::landing(AsyncWebServerRequest *request) {
     // If no pass has been set, return the set password page, otherwise return the login page 
     if(eepromController.isAdminPassSet() == "1") {
          if (!LittleFS.exists("/AdminLoginPage.html")) {
-          request->send(404, "text/plain", "Page not found");
+          request->send(404, "text/plain", "Page not found: admin login");
         }
         request->send(LittleFS, "/AdminLoginPage.html", "text/html");
     } else {
         if (!LittleFS.exists("/AdminSetPassPage.html")) {
-          request->send(404, "text/plain", "Page not found");
+          request->send(404, "text/plain", "Page not found: admin set pass");
         }
         request->send(LittleFS, "/AdminSetPassPage.html", "text/html");
 
@@ -129,7 +139,7 @@ void Framework::landing(AsyncWebServerRequest *request) {
 void Framework::clearEepromFull(AsyncWebServerRequest *request) {
    
     if (!LittleFS.exists("/ClearEepromPage.html")) {
-      request->send(404, "text/plain", "Page not found");
+      request->send(404, "text/plain", "Page not found: clear eeprom");
     }
 
     request->send(LittleFS, "/ClearEepromPage.html", "text/html");

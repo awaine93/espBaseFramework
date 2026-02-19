@@ -6,6 +6,8 @@
     #include <ESP8266WiFi.h>
 #endif
 
+#define SERIAL_DEBUGGING
+
 IPAddress selfIP(192, 168, 1, 1);
 
 
